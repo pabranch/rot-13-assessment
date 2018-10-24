@@ -1,0 +1,15 @@
+{
+  "name": "rot-13",
+  "version": "1.0.0",
+  "description": "encode text using rot-13 algorithm",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js"
+  },
+  "author": "chyld",
+  "license": "MIT",
+  "dependencies": {
+    "mocha": "^5.2.0"
+  }
+}
