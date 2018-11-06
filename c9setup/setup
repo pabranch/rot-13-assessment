@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# Bootstrap by executing the following commands on the system to configure
+
+# cd ~
+# wget https://github.com/pabranch/rot-13-assessment/archive/master.zip
+# unzip master.zip
+# mv rot-13-assessment-master/c9setup ~
+# bash ~/c9setup/setup
+
+
+cd ~
+
+NODE=10.12.0
+
+# NODE
+source $HOME/.nvm/nvm.sh
+nvm install ${NODE}
+nvm alias default ${NODE}
+nvm use ${NODE}
+
+# DOWNLOAD DIRECTORY
+mkdir ~/downloads
+cd ~/downloads
+
+# PYTHON
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/.local/conda
+
+# JAVA
+sudo yum -y update
+sudo yum -y install java-1.8.0-openjdk-devel
+sudo update-alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java
+sudo update-alternatives --set javac /usr/lib/jvm/java-1.8.0-openjdk.x86_64/bin/javac
+
+# MAVEN
+wget http://mirror.metrocast.net/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+tar -xvf apache-maven-3.5.4-bin.tar.gz -C ~/.local
+ln -s ~/.local/apache-maven-3.5.4 ~/.local/maven
+
+# Add our custom shell config
+cd ~
+mv ~/c9setup/galvanizerc ~/.galvanizerc
+echo ". ~/.galvanizerc" >>.bashrc
+
+. ~/.bashrc
+
+python --version
+node --version
+java -version
+javac -version
+mvn -version
+
+### Setup Assessment Environment
+
+mv rot-13-assessment-master ~/environment/rot-13-assessment
+cd ~/environment
+
+rm README.md
+
+# create initial commit
+cd rot-13-assessment
+
+git init
+git add .
+git commit -m 'create assessment'
+
+cd javascript/
+npm i
+npm test
+
+npm start 'hello'
+node index.js "hello world"
+ROT=7 node index.js "goodnight moon"
+
+cd ../java
+
+echo $JAVA_HOME
+mvn clean verify
+mvn pmd:pmd
+mvn pmd:cpd
+mvn clean verify | grep WARNING
+
+java -cp target/*.jar com.example.Rot13Cli "hello world"
+export ROT=33
+echo $ROT
+java -cp target/*.jar com.example.Rot13Cli "hello world"
+java -cp target/*.jar com.example.Rot13Cli eXamPle 123
+
+ROT=3 java -cp target/*.jar com.example.Rot13Cli foo bar baz
+
+# CLEAN UP
+
+cd ~
+rm -rf ~/downloads
+
+### DONE
+echo "*************************************************************************"
+echo "*************************************************************************"
+echo "*************************************************************************"
+echo "Done!"
+echo "*************************************************************************"
+echo "*************************************************************************"
+echo "*************************************************************************"

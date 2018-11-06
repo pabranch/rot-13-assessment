@@ -1,0 +1,12 @@
+# .galvanizerc -- custom configuration
+
+# modifications needed only in interactive mode
+if [ "$PS1" != "" ]; then
+    # ignore both duplicates and commands that start with a space
+    export HISTCONTROL=ignoreboth
+fi
+
+unalias python
+
+export PATH=$HOME/.local/conda/bin:$HOME/.local/maven/bin:$PATH
+
