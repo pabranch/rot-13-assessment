@@ -10,6 +10,6 @@
   "author": "chyld",
   "license": "MIT",
   "dependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^8.2.1"
   }
 }
